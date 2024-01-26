@@ -2,7 +2,7 @@ import React from "react";
 
 const About = () => {
    return (
-      <section className='text-gray-600 body-font'>
+      <section className=' body-font'>
          <div className='container px-5 py-24 mx-auto flex flex-col'>
             <div className='lg:w-4/6 mx-auto'>
                <div className='rounded-lg h-64 overflow-hidden'>
@@ -14,7 +14,7 @@ const About = () => {
                </div>
                <div className='flex flex-col sm:flex-row mt-10'>
                   <div className='sm:w-1/3 text-center sm:pr-8 sm:py-8'>
-                     <div className='w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 text-gray-400'>
+                     <div className='w-20 h-20 rounded-full inline-flex items-center justify-center bg-gray-200 '>
                         <img
                            src='assets/images/profile.jpg'
                            alt='Profile-Image'
@@ -22,7 +22,7 @@ const About = () => {
                         />
                      </div>
                      <div className='flex flex-col items-center text-center justify-center'>
-                        <h2 className='font-medium title-font mt-4 text-gray-900 text-lg'>David Dew Mallick</h2>
+                        <h2 className='font-medium title-font mt-4  text-lg'>David Dew Mallick</h2>
                         <div className='w-12 h-1 bg-indigo-500 rounded mt-2 mb-4'></div>
                         <p className='text-base'>
                            A software engineer with a passion for building products that people love.

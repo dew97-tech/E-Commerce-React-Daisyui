@@ -1,3 +1,5 @@
+const { default: daisyui } = require("daisyui");
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
    darkMode: ["class"],
@@ -5,4 +7,7 @@ module.exports = {
    prefix: "",
 
    plugins: [require("daisyui"), require("tailwindcss-animate")],
+   daisyui: {
+      themes: ["light", "dark"],
+   },
 };

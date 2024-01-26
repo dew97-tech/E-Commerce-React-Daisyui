@@ -18,11 +18,11 @@ const Products = () => {
 
    return (
       <>
-         <section className='bg-white py-8'>
+         <section className='py-8'>
             <div className='container mx-auto flex items-center flex-wrap pt-4 pb-12'>
                <nav id='store' className='w-full z-30 top-0 px-6 py-1'>
                   <div className='w-full container mx-auto flex flex-wrap items-center justify-between mt-0 px-2 py-3'>
-                     <span className='uppercase tracking-wide no-underline hover:no-underline font-bold text-gray-800 text-xl '>
+                     <span className='uppercase tracking-wide no-underline hover:no-underline font-bold text-xl '>
                         Products
                      </span>
                      <div className='flex items-center'>
@@ -35,7 +35,7 @@ const Products = () => {
                   {(isLoading ? Array.from({ length: productsPerPage }) : currentProducts).map((product, index) => (
                      <div
                         key={index}
-                        className='flex flex-col bg-white p-4 rounded-lg shadow hover:shadow-lg hover:scale-105 transition-transform duration-300'
+                        className='flex flex-col p-4 rounded-lg shadow hover:shadow-lg hover:scale-105 transition-transform duration-300 ease-in-out'
                      >
                         {isLoading ? (
                            <div className='flex flex-col gap-8 w-52'>
@@ -47,15 +47,15 @@ const Products = () => {
                         ) : (
                            <Link to={`/products/${product.id}`} className='cursor-pointer'>
                               <img
-                                 className='object-contain object-center w-full h-48 mb-4 rounded-lg'
+                                 className='object-contain object-center w-full h-48 mb-4 rounded-lg dark:bg-gray-800'
                                  src={product.image}
                                  alt={product.title}
                               />
                               <div className='flex items-center justify-between'>
-                                 <p className='text-gray-800 font-bold'>{product.title}</p>
+                                 <p className='font-bold'>{product.title}</p>
                               </div>
 
-                              <p className='text-gray-700 mt-2'>{`£${product.price.toFixed(2)}`}</p>
+                              <p className='mt-2'>{`£${product.price.toFixed(2)}`}</p>
                            </Link>
                         )}
                      </div>
