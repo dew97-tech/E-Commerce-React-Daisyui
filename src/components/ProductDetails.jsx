@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "./Loading";
+import { ProductContext } from "../context/ProductContext";
 
 const ProductDetails = () => {
    const [product, setProduct] = useState(null);
    const { id } = useParams();
+   const { addToCart } = useContext(ProductContext);
 
    useEffect(() => {
       async function fetchData() {
@@ -45,6 +47,14 @@ const ProductDetails = () => {
                         <span className='ml-1 text-lg'>{product.rating.rate}</span>
                      </div>
                      <span className='text-gray-600 ml-2 text-lg'>{`(${product.rating.count} reviews)`}</span>
+                  </div>
+                  <div>
+                     <button
+                        onClick={() => addToCart(product)}
+                        className='text-white btn btn-square btn-primary mt-10 px-10'
+                     >
+                        Add
+                     </button>
                   </div>
                </div>
             </div>

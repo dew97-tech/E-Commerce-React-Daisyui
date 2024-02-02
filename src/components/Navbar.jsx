@@ -3,6 +3,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
 import { ProductContext } from "../context/ProductContext";
 import { ThemeContext } from "../context/ThemeContext";
+import Cart from "./Cart";
 const Navbar = () => {
    const { handleToggle } = useContext(ThemeContext);
    const { setQueryProducts, filterProductsBySearch, queryProducts } = useContext(ProductContext);
@@ -11,28 +12,32 @@ const Navbar = () => {
    const handleSearch = (e) => {
       setQueryProducts(e.target.value);
    };
-
+   console.log("user", user?.name);
    useEffect(() => {
       filterProductsBySearch();
    }, [queryProducts]);
-
    return (
-      <div className='navbar flex items-center justify-between border-b-2 border-slate-100 mb-2'>
+      <div className='navbar flex items-center justify-between border-b-2 mb-2'>
          <div className='flex gap-2 items-center justify-start'>
             <Link to='/' className='flex items-center justify-start gap-2 mx-2 text-xl font-medium uppercase'>
                <img src='assets/images/logo.png' alt='logo' className='w-10 h-10' />
                Shop Now
             </Link>
-            <span>|</span>
-            <Link to='/products' className='text-xl me-2 font-thin'>
-               <span>Products</span>
-            </Link>
-            <Link to='/about' className='text-xl me-2 font-thin'>
-               <span>About</span>
-            </Link>
+            {isAuthenticated && (
+               <>
+                  <span>|</span>
+                  <Link to='/products' className='text-xl me-2 font-thin'>
+                     <span>Products</span>
+                  </Link>
+                  <Link to='/about' className='text-xl me-2 font-thin'>
+                     <span>About</span>
+                  </Link>
+               </>
+            )}
          </div>
 
          <div className='ml-auto flex items-center gap-2'>
+            {/* Toggle Theme */}
             <label className='swap swap-rotate'>
                {/* this hidden checkbox controls the state */}
                <input type='checkbox' onChange={handleToggle} />
@@ -47,6 +52,9 @@ const Navbar = () => {
                   <path d='M21.64,13a1,1,0,0,0-1.05-.14,8.05,8.05,0,0,1-3.37.73A8.15,8.15,0,0,1,9.08,5.49a8.59,8.59,0,0,1,.25-2A1,1,0,0,0,8,2.36,10.14,10.14,0,1,0,22,14.05,1,1,0,0,0,21.64,13Zm-9.5,6.69A8.14,8.14,0,0,1,7.08,5.22v.27A10.15,10.15,0,0,0,17.22,15.63a9.79,9.79,0,0,0,2.1-.22A8.11,8.11,0,0,1,12.14,19.73Z' />
                </svg>
             </label>
+            {/* Cart Component */}
+            <Cart />
+            {/* Login Button */}
             <div className=''>
                {!isAuthenticated && (
                   <a className='link link-hover text-lg font-medium' onClick={() => loginWithRedirect()}>
@@ -63,7 +71,7 @@ const Navbar = () => {
                   </div>
                   <ul
                      tabIndex={0}
-                     className='menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box'
+                     className='menu menu-sm dropdown-content mt-3 z-[31] p-2 shadow bg-base-100 rounded-box'
                   >
                      <li>
                         <span className='font-medium'>{user.name}</span>
@@ -76,7 +84,7 @@ const Navbar = () => {
                      </li>
                      <li>
                         <Link
-                           className='font-medium'
+                           className='font-medium text-primary-600 hover:text-primary-400'
                            onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
                         >
                            Logout

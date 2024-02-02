@@ -1,69 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { ProductContext } from "../context/ProductContext";
 
 const Hero = () => {
    const [activeSlide, setActiveSlide] = useState(0);
-   const images = [
-      {
-         url: "https://images.unsplash.com/photo-1422190441165-ec2956dc9ecc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80",
-         title: "Stripy Zig Zag Jigsaw Pillow and Duvet Set",
-         description: "View Product",
-      },
-      {
-         url: "https://images.unsplash.com/photo-1533090161767-e6ffed986c88?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM0MTM2fQ&auto=format&fit=crop&w=1600&q=80",
-         title: "Real Bamboo Wall Clock",
-         description: "View Product",
-      },
-      {
-         url: "https://images.unsplash.com/photo-1519327232521-1ea2c736d34d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1600&q=80",
-         title: "Brown and blue hardbound book",
-         description: "View Product",
-      },
-   ];
+   const { products } = useContext(ProductContext);
+   const [randomProduct, setRandomProduct] = useState(null);
+
+   useEffect(() => {
+      if (products.length) {
+         setRandomProduct(products[activeSlide]);
+      }
+      setActiveSlide(Math.floor(Math.random() * products.length));
+   }, [products]);
 
    return (
       <>
-         <div className='carousel relative container mx-auto' style={{ maxWidth: "1600px" }}>
-            <div className='carousel-inner relative overflow-hidden w-full'>
-               <div
-                  className={`carousel-item absolute custom-transition-opacity duration-1000 ease-in-out`}
-                  style={{
-                     height: "50vh",
-                     backgroundImage: `url('${images[activeSlide].url}')`,
-                     backgroundSize: "cover",
-                     backgroundPosition: "center",
-                     borderRadius: "10px",
-                     position: "relative",
-                     opacity: 1,
-                  }}
-               >
-                  <div className='h-full w-full mx-auto flex pt-6 md:pt-0 md:items-center bg-cover bg-right'>
-                     <div className='container mx-auto'>
-                        <div className='flex flex-col w-full lg:w-1/2 justify-center items-start px-12 tracking-wide'>
-                           <h1 className='text-slate-700 text-5xl mb-4'>{images[activeSlide].title}</h1>
-                           <a
-                              className='text-xl inline-block no-underline border-b border-gray-600 leading-relaxed hover:text-black hover:border-black'
-                              href='#'
-                           >
-                              {images[activeSlide].description}
-                           </a>
-                        </div>
-                     </div>
+         <section className='body-font'>
+            <div className='container mx-auto flex px-5 py-24 md:flex-row flex-col items-center'>
+               <div className='lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center'>
+                  <h1 className='title-font sm:text-4xl text-3xl mb-1 font-medium'>One Stop Shop For All Your Needs</h1>
+                  <h1 className='text-3xl text-primary mt-2 mb-2'>Browse Our Products Now!</h1>
+                  <p className='mb-8 leading-relaxed'>
+                     Almost everything you need is here. From food to clothing, from gadgets to appliances, from
+                     furniture to home decors, from toys to baby needs, from school supplies to office supplies, from
+                     personal care to pet care, from sports to outdoor needs, from automotive to industrial needs and
+                     much more.
+                  </p>
+                  <div className='flex justify-center'>
+                     <Link to='/products'>
+                        <button className='inline-flex text-white bg-primary border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg hover:transition-all duration-300'>
+                           Browse
+                        </button>
+                     </Link>
                   </div>
                </div>
+               <div className='lg:max-w-sm lg:w-full md:w-1/2 w-5/6'>
+                  {randomProduct && (
+                     <img className='object-cover object-center rounded' alt='hero' src={randomProduct.image} />
+                  )}
+               </div>
             </div>
-            <button
-               className='absolute bottom-8 left-4  bg-gray-800 text-white font-bold py-2 px-4 ms-2 rounded-full transition duration-300 ease-in-out hover:bg-gray-700 mr-6'
-               onClick={() => setActiveSlide((activeSlide - 1 + images.length) % images.length)}
-            >
-               {`<`}
-            </button>
-            <button
-               className='absolute bottom-8 right-4  bg-gray-800 text-white font-bold py-2 px-4 rounded-full transition duration-300 ease-in-out hover:bg-gray-700 mr-6'
-               onClick={() => setActiveSlide((activeSlide + 1) % images.length)}
-            >
-               {">"}
-            </button>
-         </div>
+         </section>
       </>
    );
 };
