@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useUser, UserButton, SignInButton } from "@clerk/clerk-react";
+import { useUser, UserButton } from "@clerk/clerk-react";
 import { ProductContext } from "../context/ProductContext";
 import { ThemeContext } from "../context/ThemeContext";
 import Cart from "./Cart";

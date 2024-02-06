@@ -1,12 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import Loading from "./Loading";
+import { Link } from "react-router-dom";
+import { useUser } from "@clerk/clerk-react";
 import { ProductContext } from "../context/ProductContext";
 
 const ProductDetails = () => {
    const [product, setProduct] = useState(null);
    const { id } = useParams();
    const { addToCart } = useContext(ProductContext);
+   const { isSignedIn } = useUser();
 
    useEffect(() => {
       async function fetchData() {
@@ -49,12 +52,18 @@ const ProductDetails = () => {
                      <span className='text-gray-600 ml-2 text-lg'>{`(${product.rating.count} reviews)`}</span>
                   </div>
                   <div>
-                     <button
-                        onClick={() => addToCart(product)}
-                        className='text-white btn btn-square btn-primary mt-10 px-10'
-                     >
-                        Add
-                     </button>
+                     {isSignedIn ? (
+                        <button
+                           onClick={() => addToCart(product)}
+                           className='text-white btn btn-square btn-primary mt-10 px-10'
+                        >
+                           Add
+                        </button>
+                     ) : (
+                        <Link to='/sign-in' className='text-white btn btn-lg btn-primary mt-10 px-10 text-md'>
+                           Sign in to add to cart
+                        </Link>
+                     )}
                   </div>
                </div>
             </div>

@@ -7,6 +7,8 @@ import About from "../components/About";
 import ProductDetails from "../components/ProductDetails";
 import CartDetails from "../components/CartDetails";
 import SignInPage from "@/components/Sign-In";
+import Success from "@/components/Success";
+import Error from "@/components/Error";
 
 const router = createBrowserRouter([
    {
@@ -55,6 +57,22 @@ const router = createBrowserRouter([
       element: (
          <Layout>
             <SignInPage />
+         </Layout>
+      ),
+   },
+   {
+      path: "/success",
+      element: (
+         <Layout>
+            <Success />
+         </Layout>
+      ),
+   },
+   {
+      path: "/error",
+      element: (
+         <Layout>
+            <Error />
          </Layout>
       ),
    },

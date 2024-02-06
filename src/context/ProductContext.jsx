@@ -107,6 +107,7 @@ export const ProductProvider = ({ children }) => {
       queryProducts,
       filteredProducts,
       cart,
+      selectedCategory,
       // State Setters
       setSelectedCategory,
       setFilteredProducts,

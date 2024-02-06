@@ -18,12 +18,29 @@ const CartDetails = () => {
       filterProductsBySearch(); // Refresh the filtered products
    };
 
+   const handleCheckout = async () => {
+      const response = await fetch("http://localhost:4000/checkout", {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(cart),
+      });
+
+      if (response.ok) {
+         const { url } = await response.json();
+         window.location.href = url;
+      } else {
+         console.error("Checkout failed");
+      }
+   };
+
    return (
       <div className='w-full max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800 mt-auto'>
          <h2 className='text-3xl font-semibold text-gray-900 dark:text-white mb-10'>Shopping Cart</h2>
          {cart.map((item) => (
             <div key={item.id} className='mt-4 space-y-4'>
-               <div className='grid grid-cols-6 gap-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg items-center'>
+               <div className='grid grid-cols-6 gap-4 p-3 bg-gray-100 dark:bg-gray-700 rounded-lg items-center'>
                   <img
                      alt={item.title}
                      className='aspect-square rounded-md object-contain col-span-1'
@@ -32,7 +49,7 @@ const CartDetails = () => {
                      width='64'
                   />
                   <div className='grid gap-1 col-span-2'>
-                     <h3 className='text-sm font-medium text-gray-900 dark:text-white'>{item.title}</h3>
+                     <h3 className='text-md font-medium text-gray-900 dark:text-white'>{item.title}</h3>
                      <p className='text-sm text-gray-500 dark:text-gray-400'>{item.category}</p>
                   </div>
                   <div className='flex items-center space-x-2 col-span-1'>
@@ -44,7 +61,7 @@ const CartDetails = () => {
                         <MinusIcon className='h-4 w-4' />
                         <span className='sr-only'>Decrease quantity</span>
                      </Button>
-                     <p className='text-sm text-gray-900 dark:text-white'>{item.quantity}</p>
+                     <p className='text-sm text-gray-900 dark:text-white font-medium'>{item.quantity}</p>
                      <Button
                         size='icon'
                         variant='outline'
@@ -54,7 +71,9 @@ const CartDetails = () => {
                         <span className='sr-only'>Increase quantity</span>
                      </Button>
                   </div>
-                  <p className='text-md font-medium text-gray-900 dark:text-white col-span-1'>${item.price * item.quantity}</p>
+                  <p className='text-md font-medium text-gray-900 dark:text-white col-span-1'>
+                     ${item.price * item.quantity}
+                  </p>
                   <button className='btn btn-block btn-error' size='icon' onClick={() => handleRemoveItem(item.id)}>
                      <TrashIcon className='h-4 w-4' />
                      <span className='sr-only'>Remove item</span>
@@ -62,13 +81,16 @@ const CartDetails = () => {
                </div>
             </div>
          ))}
+         <hr className='mt-10 pt-0' />
          <div className='mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg'>
             <div className='flex justify-end gap-2 items-center'>
                <h3 className='text-sm font-medium text-gray-900 dark:text-white'>Total :</h3>
                <p className='text-sm font-bold text-gray-900 dark:text-white'>${calculateTotalPrice()}</p>
             </div>
             <div className='mt-6'>
-               <Button className='w-full text-white text-md py-5'>Proceed to Checkout</Button>
+               <Button className='w-full text-white text-md py-5' onClick={handleCheckout}>
+                  Proceed to Checkout
+               </Button>
             </div>
          </div>
       </div>
