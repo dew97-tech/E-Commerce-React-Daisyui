@@ -1,18 +1,18 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useAuth0 } from "@auth0/auth0-react";
 import { Link } from "react-router-dom";
+import { useUser, UserButton, SignInButton } from "@clerk/clerk-react";
 import { ProductContext } from "../context/ProductContext";
 import { ThemeContext } from "../context/ThemeContext";
 import Cart from "./Cart";
 const Navbar = () => {
    const { handleToggle } = useContext(ThemeContext);
    const { setQueryProducts, filterProductsBySearch, queryProducts } = useContext(ProductContext);
-   const { isAuthenticated, loginWithRedirect, logout, user, isLoading } = useAuth0();
+   const { isSignedIn } = useUser();
 
    const handleSearch = (e) => {
       setQueryProducts(e.target.value);
    };
-   console.log("user", user?.name);
+
    useEffect(() => {
       filterProductsBySearch();
    }, [queryProducts]);
@@ -23,7 +23,7 @@ const Navbar = () => {
                <img src='assets/images/logo.png' alt='logo' className='w-10 h-10' />
                Shop Now
             </Link>
-            {isAuthenticated && (
+            {isSignedIn && (
                <>
                   <span>|</span>
                   <Link to='/products' className='text-xl me-2 font-thin'>
@@ -53,45 +53,21 @@ const Navbar = () => {
                </svg>
             </label>
             {/* Cart Component */}
-            <Cart />
-            {/* Login Button */}
-            <div className=''>
-               {!isAuthenticated && (
-                  <a className='link link-hover text-lg font-medium' onClick={() => loginWithRedirect()}>
-                     Login
-                  </a>
-               )}
-            </div>
-            {isAuthenticated && (
-               <div className='dropdown dropdown-end'>
-                  <div tabIndex={0} role='button' className='btn btn-ghost btn-circle avatar'>
-                     <div className='w-10 rounded-full'>
-                        <img alt={user.name} src={user.picture} />
-                     </div>
+            {isSignedIn ? (
+               <>
+                  <Cart />
+                  <div className='ml-auto'>
+                     <UserButton afterSignOutUrl='/' />
                   </div>
-                  <ul
-                     tabIndex={0}
-                     className='menu menu-sm dropdown-content mt-3 z-[31] p-2 shadow bg-base-100 rounded-box'
-                  >
-                     <li>
-                        <span className='font-medium'>{user.name}</span>
-                     </li>
-                     <li>
-                        <span className='font-thin'>{user.email}</span>
-                     </li>
-                     <li>
-                        <span>Settings</span>
-                     </li>
-                     <li>
-                        <Link
-                           className='font-medium text-primary-600 hover:text-primary-400'
-                           onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}
-                        >
-                           Logout
-                        </Link>
-                     </li>
-                  </ul>
-               </div>
+               </>
+            ) : (
+               /* Login Button */
+               <Link
+                  to='/sign-in'
+                  className='px-5 py-3 bg-indigo-500 text-md font-medium text-white rounded-lg hover:bg-blue-500 duration-300'
+               >
+                  Sign In
+               </Link>
             )}
          </div>
       </div>

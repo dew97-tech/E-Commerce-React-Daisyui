@@ -2,25 +2,24 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { router } from "./routes/Routes";
+import { ClerkProvider } from "@clerk/clerk-react";
 import { RouterProvider } from "react-router-dom";
-import { Auth0Provider } from "@auth0/auth0-react";
 import { ProductProvider } from "./context/ProductContext";
 import { ThemeContextProvider } from "./context/ThemeContext";
+
+// Import your publishable key
+const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+if (!PUBLISHABLE_KEY) {
+   throw new Error("Missing Publishable Key");
+}
 ReactDOM.createRoot(document.getElementById("root")).render(
    <React.StrictMode>
-      <Auth0Provider
-         domain={import.meta.env.VITE_APP_DOMAIN}
-         clientId={import.meta.env.VITE_APP_CLIENT_ID}
-         authorizationParams={{
-            redirect_uri: window.location.origin,
-         }}
-         cacheLocation='localstorage'
-      >
-         <ThemeContextProvider>
+      <ThemeContextProvider>
+         <ClerkProvider publishableKey={PUBLISHABLE_KEY}>
             <ProductProvider>
                <RouterProvider router={router} />
             </ProductProvider>
-         </ThemeContextProvider>
-      </Auth0Provider>
+         </ClerkProvider>
+      </ThemeContextProvider>
    </React.StrictMode>
 );

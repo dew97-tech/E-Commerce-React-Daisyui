@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import { Button } from "./ui/button";
 import { ProductContext } from "../context/ProductContext";
 
 const CartDetails = () => {
@@ -18,63 +19,120 @@ const CartDetails = () => {
    };
 
    return (
-      <div className='container mx-auto mt-8 p-8 bg-white shadow-lg rounded-lg overflow-hidden'>
-         <h1 className='text-3xl font-semibold mb-6'>Shopping Cart</h1>
-         <table className='table w-full mb-8 border border-3 rounded-lg'>
-            <thead>
-               <tr>
-                  <th>Image</th>
-                  <th>Name</th>
-                  <th>Category</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th className="text-center">Action</th>
-               </tr>
-            </thead>
-            <tbody>
-               {cart.map((cartItem) => {
-                  const product = products.find((p) => p.id === cartItem.id);
-
-                  return (
-                     <tr key={cartItem.id}>
-                        <td>
-                           <img src={product.image} alt={product.title} className='w-12 h-12 object-contain object-center rounded' />
-                        </td>
-                        <td className='whitespace-nowrap'>{product.title}</td>
-                        <td>{product.category}</td>
-                        <td>
-                           <input
-                              type='number'
-                              min='1'
-                              value={cartItem.quantity}
-                              onChange={(e) => {
-                                 const newQuantity = parseInt(e.target.value);
-                                 handleQuantityChange(cartItem.id, newQuantity);
-                              }}
-                              className='w-12 text-center p-2 border border-gray-300 rounded'
-                           />
-                        </td>
-                        <td>{(cartItem.quantity * product.price).toFixed(2)} €</td>
-                        <td className="text-center">
-                           <button className='btn btn-sm btn-error p-2' onClick={() => handleRemoveItem(cartItem.id)}>
-                              Remove
-                           </button>
-                        </td>
-                     </tr>
-                  );
-               })}
-            </tbody>
-         </table>
-
-         <div className='flex justify-between'>
-            <button className='btn btn-sm btn-error p-2 mr-4' onClick={clearCart}>
-               Clear Cart
-            </button>
-            <div className='text-xl font-semibold'>Total: {calculateTotalPrice()} €</div>
-            <button className='btn btn-sm btn-primary p-2 ml-4'>Checkout</button>
+      <div className='w-full max-w-5xl mx-auto p-6 bg-white rounded-lg shadow-md dark:bg-gray-800 mt-auto'>
+         <h2 className='text-3xl font-semibold text-gray-900 dark:text-white mb-10'>Shopping Cart</h2>
+         {cart.map((item) => (
+            <div key={item.id} className='mt-4 space-y-4'>
+               <div className='grid grid-cols-6 gap-4 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg items-center'>
+                  <img
+                     alt={item.title}
+                     className='aspect-square rounded-md object-contain col-span-1'
+                     height='64'
+                     src={item.image}
+                     width='64'
+                  />
+                  <div className='grid gap-1 col-span-2'>
+                     <h3 className='text-sm font-medium text-gray-900 dark:text-white'>{item.title}</h3>
+                     <p className='text-sm text-gray-500 dark:text-gray-400'>{item.category}</p>
+                  </div>
+                  <div className='flex items-center space-x-2 col-span-1'>
+                     <Button
+                        size='icon'
+                        variant='outline'
+                        onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                     >
+                        <MinusIcon className='h-4 w-4' />
+                        <span className='sr-only'>Decrease quantity</span>
+                     </Button>
+                     <p className='text-sm text-gray-900 dark:text-white'>{item.quantity}</p>
+                     <Button
+                        size='icon'
+                        variant='outline'
+                        onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                     >
+                        <PlusIcon className='h-4 w-4' />
+                        <span className='sr-only'>Increase quantity</span>
+                     </Button>
+                  </div>
+                  <p className='text-md font-medium text-gray-900 dark:text-white col-span-1'>${item.price * item.quantity}</p>
+                  <button className='btn btn-block btn-error' size='icon' onClick={() => handleRemoveItem(item.id)}>
+                     <TrashIcon className='h-4 w-4' />
+                     <span className='sr-only'>Remove item</span>
+                  </button>
+               </div>
+            </div>
+         ))}
+         <div className='mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg'>
+            <div className='flex justify-end gap-2 items-center'>
+               <h3 className='text-sm font-medium text-gray-900 dark:text-white'>Total :</h3>
+               <p className='text-sm font-bold text-gray-900 dark:text-white'>${calculateTotalPrice()}</p>
+            </div>
+            <div className='mt-6'>
+               <Button className='w-full text-white text-md py-5'>Proceed to Checkout</Button>
+            </div>
          </div>
       </div>
    );
 };
+
+function MinusIcon(props) {
+   return (
+      <svg
+         {...props}
+         xmlns='http://www.w3.org/2000/svg'
+         width='24'
+         height='24'
+         viewBox='0 0 24 24'
+         fill='none'
+         stroke='currentColor'
+         strokeWidth='2'
+         strokeLinecap='round'
+         strokeLinejoin='round'
+      >
+         <path d='M5 12h14' />
+      </svg>
+   );
+}
+
+function PlusIcon(props) {
+   return (
+      <svg
+         {...props}
+         xmlns='http://www.w3.org/2000/svg'
+         width='24'
+         height='24'
+         viewBox='0 0 24 24'
+         fill='none'
+         stroke='currentColor'
+         strokeWidth='2'
+         strokeLinecap='round'
+         strokeLinejoin='round'
+      >
+         <path d='M5 12h14' />
+         <path d='M12 5v14' />
+      </svg>
+   );
+}
+
+function TrashIcon(props) {
+   return (
+      <svg
+         {...props}
+         xmlns='http://www.w3.org/2000/svg'
+         width='24'
+         height='24'
+         viewBox='0 0 24 24'
+         fill='none'
+         stroke='currentColor'
+         strokeWidth='2'
+         strokeLinecap='round'
+         strokeLinejoin='round'
+      >
+         <path d='M3 6h18' />
+         <path d='M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6' />
+         <path d='M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2' />
+      </svg>
+   );
+}
 
 export default CartDetails;

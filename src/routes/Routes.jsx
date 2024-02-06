@@ -6,6 +6,7 @@ import Products from "../components/Products";
 import About from "../components/About";
 import ProductDetails from "../components/ProductDetails";
 import CartDetails from "../components/CartDetails";
+import SignInPage from "@/components/Sign-In";
 
 const router = createBrowserRouter([
    {
@@ -46,6 +47,14 @@ const router = createBrowserRouter([
       element: (
          <Layout>
             <CartDetails />
+         </Layout>
+      ),
+   },
+   {
+      path: "/sign-in",
+      element: (
+         <Layout>
+            <SignInPage />
          </Layout>
       ),
    },
